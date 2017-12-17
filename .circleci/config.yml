@@ -5,6 +5,7 @@ jobs:
        - image: docker:17.06.2-ce-git
          environment:
            COMPOSE_YML: docker-compose.yml
+           CACHE_YML: docker-compose.cache.yml
     working_directory: ~/ci-rack
     steps:
       - checkout
@@ -25,11 +26,11 @@ jobs:
             pip install docker-compose==1.17.1
       - run:
           name: docker-compose pull
-          command: docker-compose -f $COMPOSE_YML pull
+          command: docker-compose -f $COMPOSE_YML -f $CACHE_YML pull
       - run:
           name: docker-compose build
           command: |
-            docker-compose -f $COMPOSE_YML build \
+            docker-compose -f $COMPOSE_YML build -f $CACHE_YML \
                            --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
                            --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
                            app
