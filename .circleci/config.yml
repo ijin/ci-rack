@@ -75,8 +75,8 @@ workflows:
     jobs:
       - build
       - test:
-          requies:
+          requires:
             - build
       - deploy:
-          requies:
+          requires:
             - test
