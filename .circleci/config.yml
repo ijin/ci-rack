@@ -1,14 +1,13 @@
 version: 2
 jobs:
   build:
-    docker:
+    docker: &defaults
        - image: docker:17.06.2-ce-git
          environment:
            COMPOSE_YML: docker-compose.yml
            CACHE_YML: docker-compose.cache.yml
     working_directory: ~/ci-rack
     steps:
-      # Build
       - checkout
       - setup_remote_docker
       - restore_cache:
@@ -46,13 +45,38 @@ jobs:
           key: v1-images-{{ .Branch }}-{{ epoch }}
           paths:
             - /cache/app.tar
+      - persist_to_workspace:
+          root: ~/ci_rack
+          paths: ./*
         
-      # Tests
+  test:
+    docker: *defaults
+    working_directory: ~/ci-rack
+    steps:
+      - attach_workspace:
+          at: ~/ci_rack
       - run:
           name: Run tests
           command: echo "test"
 
-      # Deploy
+  deploy:
+    docker: *defaults
+    working_directory: ~/ci-rack
+    steps:
+      - attach_workspace:
+          at: ~/ci_rack
       - run:
           name: Deploy
           command: echo "test"
+
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - build
+      - test:
+          requies:
+            - build
+      - deploy:
+          requies:
+            - test
