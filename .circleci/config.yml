@@ -8,6 +8,7 @@ jobs:
            CACHE_YML: docker-compose.cache.yml
     working_directory: ~/ci-rack
     steps:
+      # Build
       - checkout
       - setup_remote_docker
       - restore_cache:
@@ -49,4 +50,9 @@ jobs:
       # Tests
       - run:
           name: Run tests
+          command: echo "test"
+
+      # Deploy
+      - run:
+          name: Deploy
           command: echo "test"
