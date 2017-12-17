@@ -4,5 +4,3 @@ services:
     build: .
     ports:
       - 9292:9292
-    depends_on:
-      - database
