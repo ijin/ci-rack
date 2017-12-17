@@ -39,7 +39,7 @@ jobs:
           name: Save Docker images
           command: |
             mkdir -p /cache
-            docker save -o /cache/app.tar compose_app
+            docker save -o /cache/app.tar cirack_app
       - run: ls -alh /cache/
       - save_cache:
           key: v1-images-{{ .Branch }}-{{ epoch }}
