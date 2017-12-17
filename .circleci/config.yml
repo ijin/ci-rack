@@ -46,7 +46,7 @@ jobs:
           paths:
             - /cache/app.tar
       - persist_to_workspace:
-          root: ~/ci_rack
+          root: ~/ci-rack
           paths: ./*
         
   test:
@@ -54,7 +54,7 @@ jobs:
     working_directory: ~/ci-rack
     steps:
       - attach_workspace:
-          at: ~/ci_rack
+          at: ~/ci-rack
       - run:
           name: Run tests
           command: echo "test"
@@ -64,7 +64,7 @@ jobs:
     working_directory: ~/ci-rack
     steps:
       - attach_workspace:
-          at: ~/ci_rack
+          at: ~/ci-rack
       - run:
           name: Deploy
           command: echo "test"
