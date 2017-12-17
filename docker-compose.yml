@@ -1,0 +1,6 @@
+version: '3.2'
+services:
+  app:
+    build: .
+    ports:
+      - 9292:9292
