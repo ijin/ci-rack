@@ -30,7 +30,7 @@ jobs:
       - run:
           name: docker-compose build
           command: |
-            docker-compose -f $COMPOSE_YML build -f $CACHE_YML \
+            docker-compose -f $COMPOSE_YML -f $CACHE_YML build \
                            --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
                            --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
                            app
