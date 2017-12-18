@@ -48,13 +48,8 @@ jobs:
       - persist_to_workspace:
           root: ~/ci-rack
           paths: ./*
-        
-  test:
-    docker: *defaults
-    working_directory: ~/ci-rack
-    steps:
-      - attach_workspace:
-          at: ~/ci-rack
+
+      # test  
       - run:
           name: Run tests
           command: echo "test"
