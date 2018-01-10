@@ -54,6 +54,17 @@ jobs:
           name: Run tests
           command: echo "test"
 
+      # deploy (without workflows)
+      - run:
+          name: deploy
+          command: |
+            if [[ "$CIRCLE_BRANCH" == "master" ]]; then
+              echo "deploying"
+              eval $(aws --region ap-northeast-1 ecr get-login --no-include-email)
+              AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text | awk '{print $1}')
+              docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/test:$CIRCLE_SHA1
+            fi
+
   deploy:
     docker: *defaults
     working_directory: ~/ci-rack
