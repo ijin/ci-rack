@@ -1,5 +1,5 @@
-class HelloApp
-  def call(env)
-      [200, {}, ["Hello World"]]
-  end
+require 'sinatra'
+
+get '/' do
+  'Hello World'
 end
