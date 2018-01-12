@@ -68,7 +68,7 @@ jobs:
               #apk update && add ca-certificates && update-ca-certificates
               apk add --no-cache jq curl
               curl -L -O https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy
-              chmod +x /usr/bin/ecs-deploy
+              chmod +x ecs-deploy
               ./ecs-deploy --region ap-northeast-1 --cluster ci-rack-cluster --service-name ci-rack-service --image $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/ci-rack:$CIRCLE_SHA1
 
             fi
