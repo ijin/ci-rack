@@ -33,4 +33,4 @@ ARG AWS_SESSION_TOKEN
 
 EXPOSE 9292
 
-CMD ["ruby", "hello.rb"]
+CMD ["bundle", "exec", "ruby", "hello.rb"]
