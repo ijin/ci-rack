@@ -64,6 +64,12 @@ jobs:
               AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text | awk '{print $1}')
               docker tag cirack_app:latest $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/ci-rack:$CIRCLE_SHA1
               docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/ci-rack:$CIRCLE_SHA1
+
+              apk add --no-cache jq
+              wget https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy
+              chmod +x /usr/bin/ecs-deploy
+              ./ecs-deploy --region ap-northeast-1 --cluster ci-rack-cluster --service-name ci-rack-service --image $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/ci-rack:$CIRCLE_SHA1
+
             fi
 
   deploy:
