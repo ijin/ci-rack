@@ -67,10 +67,9 @@ jobs:
 
               #apk update && add ca-certificates && update-ca-certificates
               apk add --no-cache jq curl bash
-              curl -L -O https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy
-              chmod +x ecs-deploy
-              time ./ecs-deploy --region ap-northeast-1 --cluster ci-rack-cluster --service-name sinatra-service --image $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/ci-rack:$CIRCLE_SHA1
-
+              wget https://github.com/kayac/ecspresso/releases/download/v0.3.2/ecspresso-v0.3.2-linux-amd64 -O ecspresso
+              chmod +x ecspresso
+              time ./ecspresso deploy --config=config.yml
             fi
 
   deploy:
