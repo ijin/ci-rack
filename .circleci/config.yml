@@ -58,7 +58,7 @@ jobs:
       - run:
           name: deploy
           command: |
-            if [[ "$CIRCLE_BRANCH" == "master" ]]; then
+            #if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               echo "deploying"
               eval $(aws --region ap-northeast-1 ecr get-login --no-include-email)
               AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text | awk '{print $1}')
@@ -70,7 +70,7 @@ jobs:
               wget https://github.com/kayac/ecspresso/releases/download/v0.3.2/ecspresso-v0.3.2-linux-amd64 -O ecspresso
               chmod +x ecspresso
               time ./ecspresso deploy --config=config.yml
-            fi
+            #fi
 
   deploy:
     docker: *defaults
