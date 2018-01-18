@@ -1,19 +1,22 @@
-{
-  "family": "ci-rack",
-  "containerDefinitions": [
-    {
-      "name": "app",
-      "image": "{{ must_env `AWS_ACCOUNT_ID` }}.dkr.ecr.ap-northeast-1.amazonaws.com/ci-rack:{{ must_env `CIRCLE_SHA1` }}",
-      "cpu": 256,
-      "memory": 256,
-      "memoryReservation": 128,
-      "essential": true,
-      "portMappings": [
-        {
-          "containerPort": 4567,
-          "hostPort": 0
-        }
-      ]
-    }
-  ]
+{ "taskDefinition":
+  {
+    "family": "ci-rack",
+    "containerDefinitions": [
+      {
+        "name": "app",
+        "image": "{{ must_env `AWS_ACCOUNT_ID` }}.dkr.ecr.ap-northeast-1.amazonaws.com/ci-rack:{{ must_env `CIRCLE_SHA1` }}",
+        "cpu": 256,
+        "memory": 256,
+        "memoryReservation": 128,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 4567,
+            "hostPort": 0
+          }
+        ]
+      }
+    ]
+  }
 }
+  
