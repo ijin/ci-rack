@@ -67,7 +67,7 @@ jobs:
 
               #apk update && add ca-certificates && update-ca-certificates
               apk add --no-cache jq curl bash
-              curl -L https://github.com/kayac/ecspresso/releases/download/v0.3.2/ecspresso-v0.3.2-linux-amd64 -o ecspresso
+              curl -L https://github.com/kayac/ecspresso/releases/download/v0.3.3/ecspresso-v0.3.3-linux-amd64 -o ecspresso
               chmod +x ecspresso
               time ./ecspresso deploy --config=config.yml
             #fi
