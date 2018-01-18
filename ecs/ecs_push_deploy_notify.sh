@@ -9,10 +9,10 @@ export SHA1=`echo ${CIRCLE_SHA1} | cut -c1-7`
 # IDEA: put outside this function ref: http://www.savvyclutch.com/devops/continuous-deployment-to-aws-ecs-and-circle-ci/
 echo "pushing"
 docker tag $DOCKER_IMAGE:${DOCKER_TAG:-latest} $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/ci-rack:$SHA1
-time docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/ci-rack:$SHA1
+docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/ci-rack:$SHA1
 
 echo "deploying"
-time ./ecspresso deploy --config=$1
+./ecspresso deploy --config=$1
 
 echo "notifying"
 if [ $? -eq 0 ]; then
