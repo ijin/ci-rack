@@ -74,18 +74,17 @@ jobs:
             shopt -s extglob
             case "$CIRCLE_BRANCH" in
               master)
-                ecs_push_deploy_notify.sh config.yml;;
+                ./ecs_push_deploy_notify.sh config.yml;;
               release/staging)
-                ecs_push_deploy_notify.sh staging.yml;;
+                ./ecs_push_deploy_notify.sh staging.yml;;
               work/+([a-z0-9-_]))
                 export YML=${CIRCLE_BRANCH##*/}.yml
                 # TODO: replace service
-                ecs_push_deploy_notify.sh $YML;;
+                ./ecs_push_deploy_notify.sh $YML;;
               !(1)) #debug
-                ecs_push_deploy_notify.sh config.yml
+                ./ecs_push_deploy_notify.sh config.yml
             esac
             shopt -u extglob
-            time ./ecspresso deploy --config=config.yml
 
   # triggered via api call?
   deployment:
