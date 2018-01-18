@@ -1,0 +1,6 @@
+region: ap-northeast-1
+cluster: ci-rack-cluster
+service: sinatra-service
+task_definition: task-definition.json
+service_definition: service.json
+timeout: 3m
