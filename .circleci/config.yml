@@ -6,6 +6,7 @@ jobs:
          environment:
            COMPOSE_YML: docker-compose.yml
            CACHE_YML: docker-compose.cache.yml
+           DOCKER_IMAGE: cirack_app
     working_directory: ~/ci-rack
     steps:
       - checkout
@@ -27,6 +28,7 @@ jobs:
       - run:
           name: docker-compose pull
           command: docker-compose -f $COMPOSE_YML -f $CACHE_YML pull
+      # TODO: confirm multiple builds
       - run:
           name: docker-compose build
           command: |
@@ -45,6 +47,13 @@ jobs:
           key: v1-images-{{ .Branch }}-{{ epoch }}
           paths:
             - /cache/app.tar
+      - run:
+          name: Install ecspresso
+          command: |
+            #apk update && add ca-certificates && update-ca-certificates
+            apk add --no-cache curl
+            curl -L https://github.com/kayac/ecspresso/releases/download/v0.3.3/ecspresso-v0.3.3-linux-amd64 -o ecs/ecspresso
+            chmod +x ecspresso
       - persist_to_workspace:
           root: ~/ci-rack
           paths: ./*
@@ -58,21 +67,25 @@ jobs:
       - run:
           name: deploy
           command: |
-            #if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-              echo "deploying"
-              eval $(aws --region ap-northeast-1 ecr get-login --no-include-email)
-              export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text | awk '{print $1}')
-              docker tag cirack_app:latest $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/ci-rack:$CIRCLE_SHA1
-              time docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/ci-rack:$CIRCLE_SHA1
-
-              #apk update && add ca-certificates && update-ca-certificates
-              apk add --no-cache jq curl bash
-              curl -L https://github.com/kayac/ecspresso/releases/download/v0.3.3/ecspresso-v0.3.3-linux-amd64 -o ecspresso
-              chmod +x ecspresso
+            # for autodeployments...call deploy
+            # if ecs service does not exist, create
+            cd ecs
+            case "$CIRCLE_BRANCH" in
+              master)
+                ecs_push_deploy_notify.sh config.yml;;
+              release/staging)
+                ecs_push_deploy_notify.sh staging.yml;;
+              work/+([a-z0-9-_]))
+                export YML=${CIRCLE_BRANCH##*/}.yml
+                # TODO: replace service
+                ecs_push_deploy_notify.sh $YML;;
+              *) #debug
+                ecs_push_deploy_notify.sh config.yml;;
+            esac
               time ./ecspresso deploy --config=config.yml
-            #fi
 
-  deploy:
+  # triggered via api call?
+  deployment:
     docker: *defaults
     working_directory: ~/ci-rack
     steps:
