@@ -84,7 +84,7 @@ jobs:
               !(1)) #debug
                 ./ecs_push_deploy_notify.sh config.yml
             esac
-            shopt -u extglob
+            #shopt -u extglob
 
   # triggered via api call?
   deployment:
