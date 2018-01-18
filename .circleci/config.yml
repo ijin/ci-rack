@@ -70,6 +70,7 @@ jobs:
             # for autodeployments...call deploy
             # if ecs service does not exist, create
             cd ecs
+            shopt -s extglob
             case "$CIRCLE_BRANCH" in
               master)
                 ecs_push_deploy_notify.sh config.yml;;
@@ -79,10 +80,11 @@ jobs:
                 export YML=${CIRCLE_BRANCH##*/}.yml
                 # TODO: replace service
                 ecs_push_deploy_notify.sh $YML;;
-              *) #debug
+              !(1)) #debug
                 ecs_push_deploy_notify.sh config.yml
             esac
-              time ./ecspresso deploy --config=config.yml
+            shopt -u extglob
+            time ./ecspresso deploy --config=config.yml
 
   # triggered via api call?
   deployment:
