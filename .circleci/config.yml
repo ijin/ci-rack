@@ -51,7 +51,7 @@ jobs:
           name: Install ecspresso
           command: |
             #apk update && add ca-certificates && update-ca-certificates
-            apk add --no-cache curl
+            apk add --no-cache curl bash
             curl -L https://github.com/kayac/ecspresso/releases/download/v0.3.3/ecspresso-v0.3.3-linux-amd64 -o ecs/ecspresso
             chmod +x ecs/ecspresso
 #      - persist_to_workspace:
@@ -66,6 +66,7 @@ jobs:
       # deploy (without workflows)
       - run:
           name: deploy
+          shell: /bin/bash
           command: |
             # for autodeployments...call deploy
             # if ecs service does not exist, create
