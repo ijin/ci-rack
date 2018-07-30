@@ -81,7 +81,6 @@ jobs:
               feature/+([a-z0-9-_]))
                 export FEATURE=${CIRCLE_BRANCH##*/}
                 sed -i -e "s/service:.*/service: ${FEATURE}/" feature.yml
-                ll
                 ./ecs_push_deploy_notify.sh feature.yml;;
               !(1)) #debug
                 ./ecs_push_deploy_notify.sh config.yml
