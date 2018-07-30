@@ -50,8 +50,8 @@ jobs:
       - run:
           name: Install ecspresso
           command: |
-            #apk update && add ca-certificates && update-ca-certificates
-            apk add --no-cache curl bash
+            apk update #&& add ca-certificates && update-ca-certificates
+            apk add --no-cache curl curl-dev bash
             curl -L https://github.com/kayac/ecspresso/releases/download/v0.3.3/ecspresso-v0.3.3-linux-amd64 -o ecs/ecspresso
             chmod +x ecs/ecspresso
 #      - persist_to_workspace:
@@ -70,6 +70,7 @@ jobs:
           command: |
             # for autodeployments...call deploy
             # if ecs service does not exist, create
+            set -e
             cd ecs
             shopt -s extglob
             case "$CIRCLE_BRANCH" in
@@ -80,6 +81,7 @@ jobs:
               feature/+([a-z0-9-_]))
                 export FEATURE=${CIRCLE_BRANCH##*/}
                 sed -i -e "s/service:.*/service: ${FEATURE}/" feature.yml
+                lll
                 ./ecs_push_deploy_notify.sh feature.yml;;
               !(1)) #debug
                 ./ecs_push_deploy_notify.sh config.yml
